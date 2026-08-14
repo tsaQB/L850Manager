@@ -8,6 +8,18 @@ public sealed partial class RadioService(AtCommandService at, WwanService wwan)
     private readonly SemaphoreSlim _mutationLock = new(1, 1);
     private static readonly int[] SupportedBands = [1, 2, 3, 4, 5, 7, 8, 11, 12, 13, 17, 18, 19, 20, 21, 26, 28, 29, 30, 38, 39, 40, 41, 66];
 
+    public async Task<RadioPreferences> GetPreferencesAsync(CancellationToken cancellationToken = default)
+    {
+        string response = await at.ExecuteAsync("AT+XACT?", TimeSpan.FromSeconds(6), cancellationToken);
+        Match match = Xact().Match(response);
+        if (!match.Success) throw new InvalidOperationException("The modem returned an unrecognized radio preference response.");
+        NetworkMode mode = match.Groups[1].Value switch { "1" => NetworkMode.ThreeGOnly, "2" => NetworkMode.FourGOnly, _ => NetworkMode.ThreeGAndFourG };
+        int[] bands = match.Groups[3].Value.Split(',', StringSplitOptions.RemoveEmptyEntries)
+            .Select(x => int.TryParse(x.Trim(), out int value) ? value : -1)
+            .Where(x => x >= 101).Select(x => x - 100).Distinct().Order().ToArray();
+        return new(mode, bands);
+    }
+
     public async Task<IReadOnlyList<CellSnapshot>> ScanCellsAsync(CancellationToken cancellationToken = default)
     {
         string response = await at.ExecuteAsync("AT+XMCI=1", TimeSpan.FromSeconds(20), cancellationToken);

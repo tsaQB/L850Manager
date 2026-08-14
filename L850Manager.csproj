@@ -13,7 +13,7 @@
     <EnableMsixTooling>true</EnableMsixTooling>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <AssemblyName>L850Manager</AssemblyName>
     <Authors>As-tsaqib</Authors>
     <Description>Native Windows manager for Fibocom L850-GL MBIM modems.</Description>

@@ -12,9 +12,32 @@ public sealed partial class RadioPage : Page
     public RadioPage()
     {
         InitializeComponent();
+        Loaded += async (_, _) => await LoadPreferencesAsync();
         BandAny.Checked += (_, _) => { if (_updating) return; _updating = true; foreach (var b in Bands) b.IsChecked = false; _updating = false; UpdateHint(); };
         foreach (var band in Bands) { band.Checked += BandChanged; band.Unchecked += BandChanged; }
     }
+
+    private async Task LoadPreferencesAsync()
+    {
+        StatusProgress.IsActive = true;
+        try
+        {
+            RadioPreferences preferences = await App.Radio.GetPreferencesAsync();
+            _updating = true;
+            NetworkModeSelector.SelectedIndex = preferences.Mode switch { NetworkMode.ThreeGOnly => 0, NetworkMode.FourGOnly => 1, _ => 2 };
+            int[] values = [1,3,5,7,8,20,28,40,41];
+            foreach ((CheckBox box, int i) in Bands.Select((box, i) => (box, i))) box.IsChecked = preferences.Bands.Contains(values[i]);
+            BandAny.IsChecked = preferences.Bands.Count == 0;
+            _updating = false;
+            UpdateHint();
+            CurrentModeText.Text = preferences.Mode switch { NetworkMode.ThreeGOnly => "3G only", NetworkMode.FourGOnly => "4G only", _ => "3G + 4G automatic" };
+            CurrentBandsText.Text = preferences.Bands.Count == 0 ? "All supported LTE bands" : string.Join(" · ", preferences.Bands.Select(x => $"B{x}"));
+        }
+        catch (Exception ex) { CurrentModeText.Text = "Configuration unavailable"; CurrentBandsText.Text = ex.Message; }
+        finally { StatusProgress.IsActive = false; }
+    }
+
+    private async void Refresh_Click(object sender, RoutedEventArgs e) => await LoadPreferencesAsync();
 
     private void BandChanged(object sender, RoutedEventArgs e)
     {
@@ -41,5 +64,6 @@ public sealed partial class RadioPage : Page
         if (await confirm.ShowAsync() != ContentDialogResult.Primary) return;
         RadioOperationResult result = await App.Radio.ApplyModeAndBandsAsync(mode, selected);
         await new ContentDialog { XamlRoot=XamlRoot, Title=result.Success ? "Radio settings applied" : $"Failed at {result.Stage}", Content=result.Message, CloseButtonText="Close" }.ShowAsync();
+        if (result.Success) await LoadPreferencesAsync();
     }
 }
