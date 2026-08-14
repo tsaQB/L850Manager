@@ -5,7 +5,16 @@ namespace L850Manager.Pages;
 public sealed partial class LockPage : Page
 {
     private bool _updatingBands;
-    public LockPage() => InitializeComponent();
+    public LockPage()
+    {
+        InitializeComponent();
+        BandAny.Checked += BandAny_Checked;
+        foreach (var box in BandBoxes)
+        {
+            box.Checked += Band_Checked;
+            box.Unchecked += Band_Unchecked;
+        }
+    }
 
     private CheckBox[] BandBoxes => [Band1, Band3, Band5, Band7, Band8, Band20, Band28, Band40, Band41];
 

@@ -25,16 +25,16 @@
                     <Grid RowSpacing="10" ColumnSpacing="10">
                         <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
                         <Grid.RowDefinitions><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
-                        <CheckBox x:Name="BandAny" Grid.ColumnSpan="3" IsChecked="True" Content="Automatic · all supported bands" Checked="BandAny_Checked"/>
-                        <CheckBox x:Name="Band1" Grid.Row="1" Content="Band 1" Checked="Band_Checked" Unchecked="Band_Unchecked"/>
-                        <CheckBox x:Name="Band3" Grid.Row="1" Grid.Column="1" Content="Band 3" Checked="Band_Checked" Unchecked="Band_Unchecked"/>
-                        <CheckBox x:Name="Band5" Grid.Row="1" Grid.Column="2" Content="Band 5" Checked="Band_Checked" Unchecked="Band_Unchecked"/>
-                        <CheckBox x:Name="Band7" Grid.Row="2" Content="Band 7" Checked="Band_Checked" Unchecked="Band_Unchecked"/>
-                        <CheckBox x:Name="Band8" Grid.Row="2" Grid.Column="1" Content="Band 8" Checked="Band_Checked" Unchecked="Band_Unchecked"/>
-                        <CheckBox x:Name="Band20" Grid.Row="2" Grid.Column="2" Content="Band 20" Checked="Band_Checked" Unchecked="Band_Unchecked"/>
-                        <CheckBox x:Name="Band28" Grid.Row="3" Content="Band 28" Checked="Band_Checked" Unchecked="Band_Unchecked"/>
-                        <CheckBox x:Name="Band40" Grid.Row="3" Grid.Column="1" Content="Band 40" Checked="Band_Checked" Unchecked="Band_Unchecked"/>
-                        <CheckBox x:Name="Band41" Grid.Row="3" Grid.Column="2" Content="Band 41" Checked="Band_Checked" Unchecked="Band_Unchecked"/>
+                        <CheckBox x:Name="BandAny" Grid.ColumnSpan="3" IsChecked="True" Content="Automatic · all supported bands"/>
+                        <CheckBox x:Name="Band1" Grid.Row="1" Content="Band 1"/>
+                        <CheckBox x:Name="Band3" Grid.Row="1" Grid.Column="1" Content="Band 3"/>
+                        <CheckBox x:Name="Band5" Grid.Row="1" Grid.Column="2" Content="Band 5"/>
+                        <CheckBox x:Name="Band7" Grid.Row="2" Content="Band 7"/>
+                        <CheckBox x:Name="Band8" Grid.Row="2" Grid.Column="1" Content="Band 8"/>
+                        <CheckBox x:Name="Band20" Grid.Row="2" Grid.Column="2" Content="Band 20"/>
+                        <CheckBox x:Name="Band28" Grid.Row="3" Content="Band 28"/>
+                        <CheckBox x:Name="Band40" Grid.Row="3" Grid.Column="1" Content="Band 40"/>
+                        <CheckBox x:Name="Band41" Grid.Row="3" Grid.Column="2" Content="Band 41"/>
                     </Grid>
                     <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Style="{StaticResource QuietButtonStyle}" Content="Apply network settings" Click="ApplyBands_Click"/>
                 </StackPanel>

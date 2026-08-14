@@ -26,6 +26,7 @@ public sealed partial class MainWindow : Window
     private async void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
     {
         Activated -= MainWindow_Activated;
+        await Task.Delay(TimeSpan.FromSeconds(5));
         var availability = await App.Esim.DetectAsync();
         EsimNavItem.Visibility = availability.IsDetected ? Visibility.Visible : Visibility.Collapsed;
     }
@@ -44,30 +45,37 @@ public sealed partial class MainWindow : Window
     {
         if (args.IsSettingsSelected)
         {
-            NavFrame.Navigate(typeof(SettingsPage));
+            NavigateOnce(typeof(SettingsPage));
         }
         else if (args.SelectedItem is NavigationViewItem item)
         {
             switch (item.Tag)
             {
                 case "overview":
-                    NavFrame.Navigate(typeof(HomePage));
+                    NavigateOnce(typeof(HomePage));
                     break;
                 case "lock":
-                    NavFrame.Navigate(typeof(LockPage));
+                    NavigateOnce(typeof(LockPage));
                     break;
                 case "sms":
-                    NavFrame.Navigate(typeof(SmsPage));
+                    NavigateOnce(typeof(SmsPage));
                     break;
                 case "esim":
-                    NavFrame.Navigate(typeof(EsimPage));
+                    NavigateOnce(typeof(EsimPage));
                     break;
                 case "diagnostics":
-                    NavFrame.Navigate(typeof(DiagnosticsPage));
+                    NavigateOnce(typeof(DiagnosticsPage));
                     break;
                 default:
                     throw new InvalidOperationException($"Unknown navigation item tag: {item.Tag}");
             }
         }
+    }
+
+    private void NavigateOnce(Type pageType)
+    {
+        if (NavFrame.CurrentSourcePageType == pageType) return;
+        NavFrame.Navigate(pageType);
+        NavFrame.BackStack.Clear();
     }
 }

@@ -6,6 +6,9 @@ public sealed class ModemMonitor(AtCommandService at, WwanService wwan)
 {
     private CellSnapshot? _lastCell;
     private DateTimeOffset _lastCellScan = DateTimeOffset.MinValue;
+    private string? _manufacturer;
+    private string? _model;
+    private string? _firmware;
 
     public async Task<ModemSnapshot> RefreshAsync(CancellationToken cancellationToken = default)
     {
@@ -18,9 +21,9 @@ public sealed class ModemMonitor(AtCommandService at, WwanService wwan)
             }
 
             Task<WwanSnapshot> wwanTask = wwan.GetSnapshotAsync(cancellationToken);
-            string manufacturer = ModemParsers.QuotedValue(await at.ExecuteAsync("AT+CGMI", cancellationToken: cancellationToken), "+CGMI");
-            string model = ModemParsers.QuotedValue(await at.ExecuteAsync("AT+CGMM", cancellationToken: cancellationToken), "+CGMM").Split(',')[0];
-            string firmware = ModemParsers.QuotedValue(await at.ExecuteAsync("AT+CGMR", cancellationToken: cancellationToken), "+CGMR");
+            _manufacturer ??= ModemParsers.QuotedValue(await at.ExecuteAsync("AT+CGMI", cancellationToken: cancellationToken), "+CGMI");
+            _model ??= ModemParsers.QuotedValue(await at.ExecuteAsync("AT+CGMM", cancellationToken: cancellationToken), "+CGMM").Split(',')[0];
+            _firmware ??= ModemParsers.QuotedValue(await at.ExecuteAsync("AT+CGMR", cancellationToken: cancellationToken), "+CGMR");
             int? voltage = ModemParsers.Voltage(await at.ExecuteAsync("AT+CBC", cancellationToken: cancellationToken));
             int carriers = ModemParsers.ActiveCarrierCount(await at.ExecuteAsync("AT+GTCAINFO?", TimeSpan.FromSeconds(5), cancellationToken));
 
@@ -37,9 +40,9 @@ public sealed class ModemMonitor(AtCommandService at, WwanService wwan)
                 IsAvailable = true,
                 IsConnected = wwanState.IsConnected,
                 PortName = port,
-                Manufacturer = manufacturer,
-                Model = model,
-                Firmware = firmware,
+                Manufacturer = _manufacturer,
+                Model = _model,
+                Firmware = _firmware,
                 Provider = wwanState.Provider,
                 AccessTechnology = wwanState.AccessTechnology,
                 Apn = wwanState.Apn,

@@ -23,7 +23,23 @@ public sealed partial class HomePage : Page
     private async void HomePage_Loaded(object sender, RoutedEventArgs e)
     {
         _timer.Start();
+        await RefreshConnectionAsync();
         await RefreshAsync();
+    }
+
+    private async Task RefreshConnectionAsync()
+    {
+        try
+        {
+            WwanSnapshot state = await App.Wwan.GetSnapshotAsync();
+            ConnectionStateText.Text = state.IsConnected ? "Connected" : "Registered";
+            ProviderText.Text = $"·  {state.Provider}  ·  {state.AccessTechnology}";
+            ApnText.Text = state.Apn;
+        }
+        catch
+        {
+            ProviderText.Text = "·  Reading modem details…";
+        }
     }
 
     private void HomePage_Unloaded(object sender, RoutedEventArgs e)

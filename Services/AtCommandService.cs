@@ -190,7 +190,7 @@ public sealed partial class AtCommandService : IDisposable
                     response.Append(port.ReadExisting());
                     quiet.Restart();
                 }
-                else if (response.Length > 0 && quiet.ElapsedMilliseconds >= 550)
+                else if (response.Length > 0 && quiet.ElapsedMilliseconds >= 180)
                 {
                     break;
                 }
