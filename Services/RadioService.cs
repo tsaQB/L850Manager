@@ -18,6 +18,7 @@ public sealed partial class RadioService(AtCommandService at, WwanService wwan)
         int[] bands = match.Groups[3].Value.Split(',', StringSplitOptions.RemoveEmptyEntries)
             .Select(x => int.TryParse(x.Trim(), out int value) ? value : -1)
             .Where(x => x >= 101).Select(x => x - 100).Distinct().Order().ToArray();
+        if (SupportedBands.All(bands.Contains)) bands = [];
         return new(mode, bands);
     }
 

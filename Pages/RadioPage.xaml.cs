@@ -11,6 +11,8 @@ public sealed partial class RadioPage : Page
 {
     private bool _updating;
     public ObservableCollection<BandChoice> BandChoices { get; } = new(RadioService.AllowedBands.Select(b => new BandChoice(b, LabelFor(b))));
+    public IReadOnlyList<BandChoice> FddBands => BandChoices.Where(x => x.Band is < 38 or 66).ToArray();
+    public IReadOnlyList<BandChoice> TddBands => BandChoices.Where(x => x.Band is >= 38 and <= 41).ToArray();
 
     public RadioPage()
     {

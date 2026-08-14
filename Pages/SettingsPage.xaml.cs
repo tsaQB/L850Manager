@@ -13,5 +13,17 @@ public sealed partial class SettingsPage : Page
     public SettingsPage()
     {
         InitializeComponent();
+        OverviewIntervalBox.Value = App.OverviewPollingSeconds;
+        SmsIntervalBox.Value = App.SmsPollingSeconds;
+    }
+
+    private void OverviewInterval_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
+    {
+        if (!double.IsNaN(args.NewValue)) App.OverviewPollingSeconds = Math.Clamp((int)args.NewValue, 2, 60);
+    }
+
+    private void SmsInterval_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
+    {
+        if (!double.IsNaN(args.NewValue)) App.SmsPollingSeconds = Math.Clamp((int)args.NewValue, 2, 60);
     }
 }

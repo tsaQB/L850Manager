@@ -9,13 +9,20 @@
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
             </ResourceDictionary.MergedDictionaries>
-            <Color x:Key="AppBackgroundColor">#0D1012</Color>
-            <Color x:Key="PanelColor">#15191C</Color>
-            <Color x:Key="PanelHoverColor">#1B2024</Color>
-            <Color x:Key="StrokeColor">#293036</Color>
-            <Color x:Key="TextPrimaryColor">#F2F5F4</Color>
-            <Color x:Key="TextSecondaryColor">#98A29F</Color>
-            <Color x:Key="AccentMintColor">#55D6B0</Color>
+            <Color x:Key="AppBackgroundColor">#0C0F11</Color>
+            <Color x:Key="PanelColor">#131719</Color>
+            <Color x:Key="PanelHoverColor">#191E21</Color>
+            <Color x:Key="StrokeColor">#252B2F</Color>
+            <Color x:Key="TextPrimaryColor">#EDF1EF</Color>
+            <Color x:Key="TextSecondaryColor">#929B98</Color>
+            <Color x:Key="AccentMintColor">#4CC9A4</Color>
+            <Color x:Key="SystemAccentColor">#4CC9A4</Color>
+            <Color x:Key="SystemAccentColorLight1">#67D3B2</Color>
+            <Color x:Key="SystemAccentColorLight2">#83DDC1</Color>
+            <Color x:Key="SystemAccentColorLight3">#A5E8D3</Color>
+            <Color x:Key="SystemAccentColorDark1">#43B592</Color>
+            <Color x:Key="SystemAccentColorDark2">#37997B</Color>
+            <Color x:Key="SystemAccentColorDark3">#2B7D64</Color>
             <SolidColorBrush x:Key="AppBackgroundBrush" Color="{StaticResource AppBackgroundColor}" />
             <SolidColorBrush x:Key="PanelBrush" Color="{StaticResource PanelColor}" />
             <SolidColorBrush x:Key="PanelHoverBrush" Color="{StaticResource PanelHoverColor}" />
@@ -23,21 +30,28 @@
             <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimaryColor}" />
             <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondaryColor}" />
             <SolidColorBrush x:Key="AccentMintBrush" Color="{StaticResource AccentMintColor}" />
-            <SolidColorBrush x:Key="SubtleSurfaceBrush" Color="#111518" />
+            <SolidColorBrush x:Key="SubtleSurfaceBrush" Color="#0F1315" />
             <SolidColorBrush x:Key="WarningBrush" Color="#E8AA4C" />
             <SolidColorBrush x:Key="ErrorBrush" Color="#F06F65" />
+            <!-- Keep every native WinUI selection/control on the same restrained product accent. -->
+            <SolidColorBrush x:Key="AccentFillColorDefaultBrush" Color="#4CC9A4" />
+            <SolidColorBrush x:Key="AccentFillColorSecondaryBrush" Color="#45B895" />
+            <SolidColorBrush x:Key="AccentFillColorTertiaryBrush" Color="#3FA989" />
+            <SolidColorBrush x:Key="AccentTextFillColorPrimaryBrush" Color="#55D6B0" />
+            <CornerRadius x:Key="ControlCornerRadius">6</CornerRadius>
+            <CornerRadius x:Key="OverlayCornerRadius">8</CornerRadius>
 
             <Style TargetType="Page">
                 <Setter Property="Background" Value="{StaticResource AppBackgroundBrush}" />
             </Style>
             <Style x:Key="PageTitleStyle" TargetType="TextBlock">
                 <Setter Property="FontFamily" Value="Segoe UI Variable Display" />
-                <Setter Property="FontSize" Value="30" />
+                <Setter Property="FontSize" Value="28" />
                 <Setter Property="FontWeight" Value="SemiBold" />
                 <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
             </Style>
             <Style x:Key="SectionTitleStyle" TargetType="TextBlock">
-                <Setter Property="FontSize" Value="16" />
+                <Setter Property="FontSize" Value="15" />
                 <Setter Property="FontWeight" Value="SemiBold" />
                 <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
             </Style>
@@ -48,33 +62,35 @@
                 <Setter Property="Background" Value="{StaticResource PanelBrush}" />
                 <Setter Property="BorderBrush" Value="{StaticResource StrokeBrush}" />
                 <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="CornerRadius" Value="7" />
             </Style>
             <Style x:Key="QuietButtonStyle" TargetType="Button">
                 <Setter Property="Background" Value="Transparent" />
                 <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
                 <Setter Property="BorderBrush" Value="{StaticResource StrokeBrush}" />
                 <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="CornerRadius" Value="8" />
-                <Setter Property="Padding" Value="18,9" />
+                <Setter Property="CornerRadius" Value="6" />
+                <Setter Property="Padding" Value="16,8" />
+                <Setter Property="MinHeight" Value="36" />
             </Style>
             <Style x:Key="PrimaryButtonStyle" TargetType="Button">
                 <Setter Property="Background" Value="{StaticResource AccentMintBrush}" />
                 <Setter Property="Foreground" Value="#10201B" />
-                <Setter Property="CornerRadius" Value="8" />
-                <Setter Property="Padding" Value="18,9" />
+                <Setter Property="CornerRadius" Value="6" />
+                <Setter Property="Padding" Value="16,8" />
+                <Setter Property="MinHeight" Value="36" />
                 <Setter Property="FontWeight" Value="SemiBold" />
             </Style>
             <Style x:Key="MetricValueStyle" TargetType="TextBlock">
                 <Setter Property="FontFamily" Value="Segoe UI Variable Display" />
-                <Setter Property="FontSize" Value="24" />
+                <Setter Property="FontSize" Value="22" />
                 <Setter Property="FontWeight" Value="SemiBold" />
-                <Setter Property="Foreground" Value="{StaticResource AccentMintBrush}" />
+                <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
             </Style>
             <Style x:Key="EyebrowStyle" TargetType="TextBlock">
-                <Setter Property="FontSize" Value="12" />
+                <Setter Property="FontSize" Value="13" />
                 <Setter Property="FontWeight" Value="SemiBold" />
-                <Setter Property="CharacterSpacing" Value="80" />
+                <Setter Property="CharacterSpacing" Value="0" />
                 <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}" />
             </Style>
         </ResourceDictionary>

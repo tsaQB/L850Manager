@@ -7,6 +7,7 @@ public sealed partial class SmsPage : Page
     private readonly DispatcherTimer _timer = new() { Interval = TimeSpan.FromSeconds(3) };
     private bool _refreshing;
     private IReadOnlyList<SmsMessage> _allMessages = [];
+    private string _searchText = string.Empty;
 
     public SmsPage()
     {
@@ -18,6 +19,7 @@ public sealed partial class SmsPage : Page
 
     private async void SmsPage_Loaded(object sender, RoutedEventArgs e)
     {
+        _timer.Interval = TimeSpan.FromSeconds(App.SmsPollingSeconds);
         _timer.Start();
         await RefreshAsync();
     }
@@ -43,8 +45,17 @@ public sealed partial class SmsPage : Page
         finally { _refreshing = false; }
     }
 
-    private void SmsFilter_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+    private void SmsFilter_SelectionChanged(SelectorBar sender, SelectorBarSelectionChangedEventArgs args)
     {
+        if (!IsLoaded) return;
+        var filtered = ApplyFilter();
+        SmsList.ItemsSource = filtered;
+        MessageCountText.Text = $"{filtered.Count} message{(filtered.Count == 1 ? "" : "s")}";
+    }
+
+    private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        _searchText = SearchBox.Text.Trim();
         if (!IsLoaded) return;
         var filtered = ApplyFilter();
         SmsList.ItemsSource = filtered;
@@ -53,13 +64,15 @@ public sealed partial class SmsPage : Page
 
     private IReadOnlyList<SmsMessage> ApplyFilter()
     {
-        string tag = (SmsFilter.SelectedItem as NavigationViewItem)?.Tag?.ToString() ?? "inbox";
-        return tag switch
+        string tag = (SmsFilter.SelectedItem as SelectorBarItem)?.Tag?.ToString() ?? "inbox";
+        IEnumerable<SmsMessage> filtered = tag switch
         {
-            "sent" => _allMessages.Where(x => x.IsSent).ToArray(),
+            "sent" => _allMessages.Where(x => x.IsSent),
             "all" => _allMessages,
-            _ => _allMessages.Where(x => !x.IsSent).ToArray()
+            _ => _allMessages.Where(x => !x.IsSent)
         };
+        if (!string.IsNullOrWhiteSpace(_searchText)) filtered = filtered.Where(x => x.Sender.Contains(_searchText, StringComparison.OrdinalIgnoreCase) || x.Body.Contains(_searchText, StringComparison.OrdinalIgnoreCase));
+        return filtered.ToArray();
     }
 
     private void SmsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -102,7 +115,7 @@ public sealed partial class SmsPage : Page
             SmsMessage sent = await App.Sms.SendAsync(recipient, body);
             MessageTextBox.Text = string.Empty;
             await RefreshAsync();
-            SmsFilter.SelectedItem = SmsFilter.MenuItems.OfType<NavigationViewItem>().First(x => Equals(x.Tag, "sent"));
+            SmsFilter.SelectedItem = SmsFilter.Items.OfType<SelectorBarItem>().First(x => Equals(x.Tag, "sent"));
             SmsList.SelectedItem = (SmsList.ItemsSource as IEnumerable<SmsMessage>)?.FirstOrDefault(x => x.Index == sent.Index);
             await ShowInfoAsync("Message sent", "The modem accepted the SMS for network delivery and it now appears in Sent.");
         }

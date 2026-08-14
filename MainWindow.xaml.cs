@@ -36,6 +36,13 @@ public sealed partial class MainWindow : Window
     private async void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
     {
         Activated -= MainWindow_Activated;
+        try
+        {
+            Models.WwanSnapshot state = await App.Wwan.GetSnapshotAsync();
+            FooterStateText.Text = state.IsConnected ? "Connected" : "Modem ready";
+            FooterNetworkText.Text = $"{state.Provider} · {state.AccessTechnology}";
+        }
+        catch { FooterNetworkText.Text = "Cellular status unavailable"; }
         await Task.Delay(TimeSpan.FromSeconds(5));
         var availability = await App.Esim.DetectAsync();
         EsimNavItem.Visibility = availability.IsDetected ? Visibility.Visible : Visibility.Collapsed;

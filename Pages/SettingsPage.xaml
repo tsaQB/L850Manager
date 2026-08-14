@@ -1,21 +1,13 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<Page
-    x:Class="L850Manager.Pages.SettingsPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:L850Manager.Pages"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
-
-    <Grid Padding="40,28,40,32" RowSpacing="24">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <StackPanel Spacing="5"><TextBlock Style="{StaticResource PageTitleStyle}" Text="Settings" /><TextBlock Style="{StaticResource SecondaryTextStyle}" Text="Appearance, polling, and application behavior"/></StackPanel>
-        <Border Grid.Row="1" Style="{StaticResource PanelStyle}" Padding="20" MaxWidth="720" HorizontalAlignment="Left">
-            <StackPanel Spacing="18"><TextBlock Style="{StaticResource SectionTitleStyle}" Text="Appearance"/><ToggleSwitch Header="Use system theme" OffContent="Dark" OnContent="System"/><Rectangle Height="1" Fill="{StaticResource StrokeBrush}"/><TextBlock Style="{StaticResource SectionTitleStyle}" Text="Polling"/><NumberBox Header="Overview refresh interval (seconds)" Value="5" Minimum="2" Maximum="60"/><ToggleSwitch Header="Pause polling while editing lock values" IsOn="True"/></StackPanel>
-        </Border>
-    </Grid>
+<?xml version="1.0" encoding="utf-8"?>
+<Page x:Class="L850Manager.Pages.SettingsPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+ <ScrollViewer VerticalScrollBarVisibility="Auto"><Grid Padding="32,28,32,40" RowSpacing="16" MaxWidth="960" HorizontalAlignment="Left">
+  <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+  <StackPanel Spacing="5"><TextBlock Style="{StaticResource PageTitleStyle}" Text="Settings"/><TextBlock Style="{StaticResource SecondaryTextStyle}" Text="Application behavior and information"/></StackPanel>
+  <Border Grid.Row="1" Style="{StaticResource PanelStyle}"><Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="240"/></Grid.ColumnDefinitions><Grid.RowDefinitions><RowDefinition Height="72"/><RowDefinition Height="72"/></Grid.RowDefinitions>
+   <StackPanel Margin="20,0" VerticalAlignment="Center" Spacing="3"><TextBlock FontWeight="SemiBold" Text="Overview refresh interval"/><TextBlock Style="{StaticResource SecondaryTextStyle}" Text="How often live radio values are refreshed"/></StackPanel><NumberBox x:Name="OverviewIntervalBox" Grid.Column="1" Margin="16" ValueChanged="OverviewInterval_ValueChanged" Minimum="2" Maximum="60" SpinButtonPlacementMode="Compact" Header="Seconds"/>
+   <StackPanel Grid.Row="1" Margin="20,0" VerticalAlignment="Center" Spacing="3"><TextBlock FontWeight="SemiBold" Text="SMS polling interval"/><TextBlock Style="{StaticResource SecondaryTextStyle}" Text="How often SIM storage is checked for new messages"/></StackPanel><NumberBox x:Name="SmsIntervalBox" Grid.Row="1" Grid.Column="1" Margin="16" ValueChanged="SmsInterval_ValueChanged" Minimum="2" Maximum="60" SpinButtonPlacementMode="Compact" Header="Seconds"/>
+   <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Height="1" VerticalAlignment="Top" Fill="{StaticResource StrokeBrush}"/>
+  </Grid></Border>
+  <Border Grid.Row="2" Style="{StaticResource PanelStyle}"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="180"/><ColumnDefinition/></Grid.ColumnDefinitions><Grid.RowDefinitions><RowDefinition Height="52"/><RowDefinition Height="52"/><RowDefinition Height="52"/></Grid.RowDefinitions><TextBlock Margin="20,0" VerticalAlignment="Center" Style="{StaticResource SecondaryTextStyle}" Text="Application"/><TextBlock Grid.Column="1" VerticalAlignment="Center" Text="L850 Manager"/><TextBlock Grid.Row="1" Margin="20,0" VerticalAlignment="Center" Style="{StaticResource SecondaryTextStyle}" Text="Version"/><TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Text="1.2.0"/><TextBlock Grid.Row="2" Margin="20,0" VerticalAlignment="Center" Style="{StaticResource SecondaryTextStyle}" Text="Privacy"/><TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource SecondaryTextStyle}" Text="Modem identifiers and eSIM activation data are never written to logs" TextWrapping="Wrap"/><Rectangle Grid.Row="1" Grid.ColumnSpan="2" Height="1" VerticalAlignment="Top" Fill="{StaticResource StrokeBrush}"/><Rectangle Grid.Row="2" Grid.ColumnSpan="2" Height="1" VerticalAlignment="Top" Fill="{StaticResource StrokeBrush}"/></Grid></Border>
+ </Grid></ScrollViewer>
 </Page>
