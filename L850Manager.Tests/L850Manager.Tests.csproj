@@ -16,6 +16,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Models\ModemSnapshot.cs" Link="Source\ModemSnapshot.cs" />
+    <Compile Include="..\Models\SmsMessage.cs" Link="Source\SmsMessage.cs" />
     <Compile Include="..\Services\ModemParsers.cs" Link="Source\ModemParsers.cs" />
+    <Compile Include="..\Services\SmsParser.cs" Link="Source\SmsParser.cs" />
   </ItemGroup>
 </Project>

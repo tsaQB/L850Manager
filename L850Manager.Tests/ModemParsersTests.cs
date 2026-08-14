@@ -48,4 +48,18 @@ public sealed class ModemParsersTests
         Assert.Equal(3550, ModemParsers.Voltage("+CBC: 0,3550\r\nOK"));
         Assert.Null(ModemParsers.Voltage("+CBC: 0,99999\r\nOK"));
     }
+
+    [Fact]
+    public void Sms_parser_accepts_empty_and_quoted_alpha_fields()
+    {
+        const string response = "+CMGL: 1,\"REC UNREAD\",\"+620000000001\",,\"26/08/14,21:48:54+28\"\r\nFirst message\r\n+CMGL: 2,\"REC READ\",\"+620000000002\",\"\",\"26/08/14,21:51:03+28\"\r\nSecond message\r\nOK\r\n";
+
+        var messages = SmsParser.ParseTextModeList(response);
+
+        Assert.Equal(2, messages.Count);
+        Assert.Equal("Second message", messages[0].Body);
+        Assert.Equal(TimeSpan.FromHours(7), messages[0].Timestamp?.Offset);
+        Assert.Equal("+620000000001", messages[1].Sender);
+        Assert.Equal("REC UNREAD", messages[1].Status);
+    }
 }

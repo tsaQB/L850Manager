@@ -8,7 +8,7 @@ L850 Manager is a native Windows desktop utility for the Fibocom L850-GL modem i
 - Industrial-console Overview with a live RSRP history chart, metric cards, and dynamic serving/neighbor table
 - Separate Radio and Cells workflows with responsive narrow-window layouts
 - Restrained Fluent engineering design system with unified native-control accent, dense status tables, and responsive FDD/TDD band policy groups
-- SIM SMS inbox polling, send with confirmation, and confirmed deletion
+- SIM SMS inbox polling with L850-compatible header parsing, send with confirmation, and confirmed deletion
 - 3G/4G mode and LTE band selection with readback verification
 - Bounded XMCI serving/neighbor scan
 - Expert PCI/EARFCN set/clear with NVM barriers, single reset, rediscovery, registration wait, and post-condition checks
@@ -33,9 +33,10 @@ The eSIM item appears only after the inserted removable card accepts the standar
 dotnet restore
 dotnet build
 dotnet run --project L850Manager.csproj
+dotnet publish -c Release -p:Platform=x64
 ```
 
-The packaged WinUI 3 command-line workflow requires Windows Developer Mode for local launch.
+The publish profiles produce unpackaged, self-contained .NET builds that can be launched directly. The matching Windows App Runtime must be installed on the target PC.
 
 ## Status
 

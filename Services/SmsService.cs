@@ -1,5 +1,3 @@
-using System.Globalization;
-using System.Text.RegularExpressions;
 using System.Text.Json;
 using L850Manager.Models;
 
@@ -12,6 +10,7 @@ public sealed partial class SmsService
     private readonly List<SmsMessage> _sent = [];
     private readonly SemaphoreSlim _historyLock = new(1, 1);
     private int _nextLocalIndex = -1;
+    private bool _receiveConfigured;
 
     public SmsService(AtCommandService at)
     {
@@ -21,27 +20,18 @@ public sealed partial class SmsService
 
     public async Task<IReadOnlyList<SmsMessage>> ListAsync(CancellationToken cancellationToken = default)
     {
-        string response = await _at.ExecuteTextModeAsync("AT+CMGL=\"ALL\"", TimeSpan.FromSeconds(8), cancellationToken);
-        string normalized = response.Replace("\r", string.Empty);
-        MatchCollection headers = Header().Matches(normalized);
-        List<SmsMessage> messages = [];
-        for (int i = 0; i < headers.Count; i++)
+        if (!_receiveConfigured)
         {
-            Match header = headers[i];
-            int bodyStart = header.Index + header.Length;
-            int bodyEnd = i + 1 < headers.Count ? headers[i + 1].Index : normalized.IndexOf("\nOK", bodyStart, StringComparison.OrdinalIgnoreCase);
-            if (bodyEnd < 0) bodyEnd = normalized.Length;
-            string body = normalized[bodyStart..bodyEnd].Trim('\n', ' ', '|');
-            _ = int.TryParse(header.Groups[1].Value, out int index);
-            messages.Add(new SmsMessage(
-                index,
-                header.Groups[2].Value,
-                header.Groups[3].Value,
-                ParseTimestamp(header.Groups[4].Value),
-                body));
+            string storage = await _at.ExecuteAsync("AT+CPMS=\"SM\",\"SM\",\"SM\"", TimeSpan.FromSeconds(5), cancellationToken);
+            string notification = await _at.ExecuteAsync("AT+CNMI=1,1,0,0,0", TimeSpan.FromSeconds(5), cancellationToken);
+            if (!storage.Contains("OK", StringComparison.OrdinalIgnoreCase) || !notification.Contains("OK", StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException("The modem did not accept the SMS receive configuration.");
+            _receiveConfigured = true;
         }
-        SmsMessage[] result = messages.Concat(_sent).OrderByDescending(x => x.Timestamp).ThenByDescending(x => x.Index).ToArray();
-        App.Log.Info("sms", $"Loaded {result.Length} message(s) from SIM storage.");
+        string response = await _at.ExecuteTextModeAsync("AT+CMGL=\"ALL\"", TimeSpan.FromSeconds(8), cancellationToken);
+        IReadOnlyList<SmsMessage> stored = SmsParser.ParseTextModeList(response);
+        SmsMessage[] result = stored.Concat(_sent).OrderByDescending(x => x.Timestamp).ThenByDescending(x => x.Index).ToArray();
+        App.Log.Info("sms", $"Loaded {stored.Count} SIM message(s) and {_sent.Count} local sent message(s).");
         return result;
     }
 
@@ -99,17 +89,4 @@ public sealed partial class SmsService
         await File.WriteAllTextAsync(_historyPath, json, cancellationToken);
     }
 
-    private static DateTimeOffset? ParseTimestamp(string value)
-    {
-        Match match = Timestamp().Match(value);
-        if (!match.Success) return null;
-        string date = match.Groups[1].Value;
-        return DateTimeOffset.TryParseExact(date, "yy/MM/dd,HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out DateTimeOffset parsed) ? parsed : null;
-    }
-
-    [GeneratedRegex("\\+CMGL:\\s*(\\d+),\"([^\"]+)\",\"([^\"]*)\",(?:\"[^\"]*\",)?\"([^\"]*)\"\\s*\\n", RegexOptions.IgnoreCase)]
-    private static partial Regex Header();
-
-    [GeneratedRegex("^(\\d{2}/\\d{2}/\\d{2},\\d{2}:\\d{2}:\\d{2})(?:[+-]\\d{2})?$")]
-    private static partial Regex Timestamp();
 }

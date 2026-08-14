@@ -9,7 +9,7 @@ namespace L850Manager.Pages;
 public sealed partial class HomePage : Page
 {
     private readonly DispatcherTimer _timer = new() { Interval = TimeSpan.FromSeconds(5) };
-    private readonly Queue<double> _signalHistory = new();
+    private readonly Queue<SignalSample> _signalHistory = new();
     private CancellationTokenSource? _refreshCancellation;
 
     public HomePage() { InitializeComponent(); Loaded += LoadedPage; Unloaded += UnloadedPage; _timer.Tick += async (_,_) => await RefreshAsync(); }
@@ -20,10 +20,31 @@ public sealed partial class HomePage : Page
     private void Render(ModemSnapshot s)
     {
         ProviderText.Text=s.Error is null?s.Provider:"Modem unavailable";ConnectionStateText.Text=s.Error is null?(s.IsConnected?"Connected":"Registered"):s.Error;TechnologyText.Text=s.AccessTechnology;HeroBandText.Text=s.Band is int b?$"Band {b}":"—";HeroRsrpText.Text=Metric(s.Rsrp,"dBm");CurrentRsrpText.Text=Metric(s.Rsrp,"dBm");RsrpText.Text=Metric(s.Rsrp,"dBm");RsrqText.Text=Metric(s.Rsrq,"dB");SinrText.Text=Metric(s.Sinr,"dB");EarfcnText.Text=s.Earfcn?.ToString()??"—";PciText.Text=s.Pci?.ToString()??"—";ApnText.Text=s.Apn;FirmwareText.Text=$"Firmware {s.Firmware}";UpdatedText.Text=$"Live · {s.UpdatedAt:HH:mm:ss}";
-        if(s.Rsrp is double value){_signalHistory.Enqueue(value);while(_signalHistory.Count>60)_signalHistory.Dequeue();RenderChart();}
+        if (s.Rsrp is double value) _signalHistory.Enqueue(new SignalSample(s.UpdatedAt, value));
+        while (_signalHistory.TryPeek(out SignalSample? sample) && sample.Timestamp < s.UpdatedAt.AddSeconds(-60)) _signalHistory.Dequeue();
+        while (_signalHistory.Count > 120) _signalHistory.Dequeue();
+        RenderChart(s.UpdatedAt);
         var rows=App.Modem.LastCells.Select(x=>new CellRow(x)).ToArray();CellList.ItemsSource=rows;CellCountText.Text=rows.Length==0?"Waiting for scan":$"{rows.Length} detected";
     }
-    private void RenderChart(){double[] values=_signalHistory.ToArray();PointCollection points=[];for(int i=0;i<values.Length;i++){double x=42+(648d*Math.Max(i,59-values.Length+1)/59d);double y=20+(Math.Clamp(-60-values[i],0,60)/60d*194);points.Add(new Point(x,y));}SignalLine.Points=points;}
+    private void RenderChart(DateTimeOffset now)
+    {
+        PointCollection points = [];
+        if (_signalHistory.Count == 1)
+        {
+            SignalSample current = _signalHistory.Peek();
+            double y = 20 + (Math.Clamp(-60 - current.Rsrp, 0, 60) / 60d * 194);
+            points.Add(new Point(684, y));
+        }
+        foreach (SignalSample sample in _signalHistory)
+        {
+            double ageSeconds = Math.Clamp((now - sample.Timestamp).TotalSeconds, 0, 60);
+            double x = 42 + (648d * (60 - ageSeconds) / 60d);
+            double y = 20 + (Math.Clamp(-60 - sample.Rsrp, 0, 60) / 60d * 194);
+            points.Add(new Point(x, y));
+        }
+        SignalLine.Points = points;
+    }
     private static string Metric(double? value,string unit)=>value is double v?$"{v:0.#} {unit}":"—";
+    private sealed record SignalSample(DateTimeOffset Timestamp, double Rsrp);
     private sealed record CellRow(CellSnapshot V){public string Role=>V.IsServing?"Serving":"Neighbor";public string Band=>$"B{V.Band}";public int Earfcn=>V.Earfcn;public int Pci=>V.Pci;public string Rsrp=>Metric(V.Rsrp,"dBm");public string Rsrq=>Metric(V.Rsrq,"dB");public string Sinr=>Metric(V.Sinr,"dB");}
 }
