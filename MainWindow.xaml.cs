@@ -72,6 +72,14 @@ public sealed partial class MainWindow : Window
         }
     }
 
+    private void WindowRoot_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        bool compact = e.NewSize.Width < 920;
+        NavView.PaneDisplayMode = compact ? NavigationViewPaneDisplayMode.LeftCompact : NavigationViewPaneDisplayMode.Left;
+        NavView.IsPaneOpen = !compact;
+        AppTitleBar.IsPaneToggleButtonVisible = compact;
+    }
+
     private void NavigateOnce(Type pageType)
     {
         if (NavFrame.CurrentSourcePageType == pageType) return;

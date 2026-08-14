@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="L850 Manager"
     mc:Ignorable="d">
-    <Grid Background="{StaticResource AppBackgroundBrush}">
+    <Grid x:Name="WindowRoot" Background="{StaticResource AppBackgroundBrush}" SizeChanged="WindowRoot_SizeChanged">
         <Grid.RowDefinitions>
             <RowDefinition Height="44" />
             <RowDefinition Height="*" />
