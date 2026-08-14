@@ -13,7 +13,7 @@ public sealed partial class HomePage : Page
     private CancellationTokenSource? _refreshCancellation;
 
     public HomePage() { InitializeComponent(); Loaded += LoadedPage; Unloaded += UnloadedPage; _timer.Tick += async (_,_) => await RefreshAsync(); }
-    private async void LoadedPage(object sender, RoutedEventArgs e) { _timer.Start(); await QuickAsync(); await RefreshAsync(); }
+    private async void LoadedPage(object sender, RoutedEventArgs e) { _timer.Interval = TimeSpan.FromSeconds(App.OverviewPollingSeconds); _timer.Start(); await QuickAsync(); await RefreshAsync(); }
     private void UnloadedPage(object sender, RoutedEventArgs e) { _timer.Stop(); _refreshCancellation?.Cancel(); }
     private async Task QuickAsync() { try { var s=await App.Wwan.GetSnapshotAsync(); ProviderText.Text=s.Provider;TechnologyText.Text=s.AccessTechnology;ConnectionStateText.Text=s.IsConnected?"Connected":"Registered";ApnText.Text=s.Apn; } catch { } }
     private async Task RefreshAsync() { if(_refreshCancellation is not null)return;_refreshCancellation=new(TimeSpan.FromSeconds(16));try{Render(await App.Modem.RefreshAsync(_refreshCancellation.Token));}finally{_refreshCancellation.Dispose();_refreshCancellation=null;} }

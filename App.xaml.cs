@@ -24,6 +24,8 @@ public partial class App : Application
     public static RadioService Radio { get; } = new(AtCommands, Wwan);
     public static EsimService Esim { get; } = new(AtCommands);
     public static AppLog Log { get; } = new();
+    public static int OverviewPollingSeconds { get; set; } = 5;
+    public static int SmsPollingSeconds { get; set; } = 3;
     
     /// <summary>
     /// Initializes the singleton application object.  This is the first line of authored code
