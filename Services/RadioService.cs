@@ -7,6 +7,7 @@ public sealed partial class RadioService(AtCommandService at, WwanService wwan)
 {
     private readonly SemaphoreSlim _mutationLock = new(1, 1);
     private static readonly int[] SupportedBands = [1, 2, 3, 4, 5, 7, 8, 11, 12, 13, 17, 18, 19, 20, 21, 26, 28, 29, 30, 38, 39, 40, 41, 66];
+    public static IReadOnlyList<int> AllowedBands => SupportedBands;
 
     public async Task<RadioPreferences> GetPreferencesAsync(CancellationToken cancellationToken = default)
     {
