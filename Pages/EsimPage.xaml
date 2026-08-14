@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="L850Manager.Pages.EsimPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer>
+        <Grid Padding="40,28,40,32" RowSpacing="24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Spacing="6">
+                <TextBlock Style="{StaticResource PageTitleStyle}" Text="eSIM" />
+                <TextBlock Style="{StaticResource SecondaryTextStyle}" Text="Removable eUICC profiles managed through Windows" />
+            </StackPanel>
+
+            <Border Grid.Row="1" Style="{StaticResource PanelStyle}" Padding="22">
+                <Grid ColumnSpacing="20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Border Width="44" Height="44" CornerRadius="12" Background="#1938D6A0">
+                        <FontIcon HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource AccentMintBrush}" Glyph="&#xE950;" FontSize="20" />
+                    </Border>
+                    <StackPanel Grid.Column="1" Spacing="4">
+                        <TextBlock x:Name="StatusText" Style="{StaticResource SectionTitleStyle}" Text="Detecting eSIM…" />
+                        <TextBlock x:Name="DetailText" Style="{StaticResource SecondaryTextStyle}" TextWrapping="Wrap" />
+                    </StackPanel>
+                    <ProgressRing x:Name="BusyRing" Grid.Column="2" Width="22" Height="22" IsActive="True" />
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="2" Style="{StaticResource PanelStyle}" Padding="22">
+                <StackPanel Spacing="16">
+                    <TextBlock Style="{StaticResource SectionTitleStyle}" Text="Profile management" />
+                    <TextBlock MaxWidth="720" HorizontalAlignment="Left" Style="{StaticResource SecondaryTextStyle}" TextWrapping="Wrap"
+                               Text="Add, activate, switch, rename, and remove profiles in the protected Windows eSIM flow. Windows keeps activation codes, EID, and profile identifiers outside L850 Manager logs." />
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Button Style="{StaticResource AccentButtonStyle}" Content="Open eSIM profiles" Click="OpenManager_Click" />
+                        <Button Content="Refresh detection" Click="Refresh_Click" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </ScrollViewer>
+</Page>

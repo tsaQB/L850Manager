@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="L850Manager.csproj" />
+  <Project Path="L850Manager.Tests/L850Manager.Tests.csproj" />
+</Solution>

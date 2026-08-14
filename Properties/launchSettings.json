@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "L850Manager (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "L850Manager (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

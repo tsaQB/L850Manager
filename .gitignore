@@ -1,0 +1,13 @@
+bin/
+obj/
+.vs/
+*.user
+*.suo
+TestResults/
+artifacts/
+*.msix
+*.msixbundle
+*.cer
+*.pfx
+*.appinstaller
+*.log

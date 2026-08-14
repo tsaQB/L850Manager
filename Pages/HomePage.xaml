@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="L850Manager.Pages.HomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:L850Manager.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <Grid Padding="40,28,40,32" RowSpacing="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel Spacing="8">
+            <TextBlock Style="{StaticResource PageTitleStyle}" Text="Overview" />
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <Ellipse Width="9" Height="9" Fill="{StaticResource AccentMintBrush}" />
+                <TextBlock x:Name="ConnectionStateText" Foreground="{StaticResource AccentMintBrush}" FontWeight="SemiBold" Text="Detecting" />
+                <TextBlock x:Name="ProviderText" Style="{StaticResource SecondaryTextStyle}" Text="·  Waiting for modem" />
+            </StackPanel>
+        </StackPanel>
+
+        <Grid Grid.Row="1" ColumnSpacing="12">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="5*"/><ColumnDefinition Width="7*"/></Grid.ColumnDefinitions>
+            <Border Style="{StaticResource PanelStyle}" Padding="20,10">
+                <Grid ColumnSpacing="18" RowSpacing="0">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="190"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="44"/><RowDefinition Height="44"/><RowDefinition Height="44"/><RowDefinition Height="44"/><RowDefinition Height="44"/><RowDefinition Height="44"/><RowDefinition Height="44"/><RowDefinition Height="44"/><RowDefinition Height="44"/><RowDefinition Height="44"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock VerticalAlignment="Center" Style="{StaticResource SecondaryTextStyle}" Text="Modem"/><TextBlock x:Name="ModelText" Grid.Column="1" VerticalAlignment="Center" FontWeight="SemiBold" Text="—"/>
+                    <TextBlock Grid.Row="1" VerticalAlignment="Center" Style="{StaticResource SecondaryTextStyle}" Text="Firmware"/><TextBlock x:Name="FirmwareText" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Text="—"/>
+                    <TextBlock Grid.Row="2" VerticalAlignment="Center" Style="{StaticResource SecondaryTextStyle}" Text="RSRP"/><TextBlock x:Name="RsrpText" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Text="—"/>
+                    <TextBlock Grid.Row="3" VerticalAlignment="Center" Style="{StaticResource SecondaryTextStyle}" Text="RSRQ"/><TextBlock x:Name="RsrqText" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Text="—"/>
+                    <TextBlock Grid.Row="4" VerticalAlignment="Center" Style="{StaticResource SecondaryTextStyle}" Text="SINR"/><TextBlock x:Name="SinrText" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Text="—"/>
+                    <TextBlock Grid.Row="5" VerticalAlignment="Center" Style="{StaticResource SecondaryTextStyle}" Text="Band"/><TextBlock x:Name="BandText" Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" Text="—"/>
+                    <TextBlock Grid.Row="6" VerticalAlignment="Center" Style="{StaticResource SecondaryTextStyle}" Text="EARFCN"/><TextBlock x:Name="EarfcnText" Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" Text="—"/>
+                    <TextBlock Grid.Row="7" VerticalAlignment="Center" Style="{StaticResource SecondaryTextStyle}" Text="PCI"/><TextBlock x:Name="PciText" Grid.Row="7" Grid.Column="1" VerticalAlignment="Center" Text="—"/>
+                    <TextBlock Grid.Row="8" VerticalAlignment="Center" Style="{StaticResource SecondaryTextStyle}" Text="Carrier aggregation"/><TextBlock x:Name="CarrierText" Grid.Row="8" Grid.Column="1" VerticalAlignment="Center" Text="—"/>
+                    <TextBlock Grid.Row="9" VerticalAlignment="Center" Style="{StaticResource SecondaryTextStyle}" Text="APN"/><TextBlock x:Name="ApnText" Grid.Row="9" Grid.Column="1" VerticalAlignment="Center" Text="—"/>
+                </Grid>
+            </Border>
+            <Border Grid.Column="1" Style="{StaticResource PanelStyle}" Padding="20">
+                <Grid RowSpacing="12">
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <Grid><TextBlock Style="{StaticResource SectionTitleStyle}" Text="RSRP (dBm)"/><TextBlock x:Name="CurrentRsrpText" HorizontalAlignment="Right" Foreground="{StaticResource AccentMintBrush}" Text="Current  —"/></Grid>
+                    <Viewbox Grid.Row="1" Stretch="Fill" Height="330">
+                        <Canvas Width="700" Height="300">
+                            <Line X1="45" Y1="20" X2="45" Y2="270" Stroke="{StaticResource StrokeBrush}"/>
+                            <Line X1="45" Y1="270" X2="680" Y2="270" Stroke="{StaticResource StrokeBrush}"/>
+                            <Line X1="45" Y1="70" X2="680" Y2="70" Stroke="#243036" StrokeDashArray="3,4"/>
+                            <Line X1="45" Y1="120" X2="680" Y2="120" Stroke="#243036" StrokeDashArray="3,4"/>
+                            <Line X1="45" Y1="170" X2="680" Y2="170" Stroke="#243036" StrokeDashArray="3,4"/>
+                            <Line X1="45" Y1="220" X2="680" Y2="220" Stroke="#243036" StrokeDashArray="3,4"/>
+                            <Polyline Stroke="{StaticResource AccentMintBrush}" StrokeThickness="2" Points="45,168 70,177 95,155 120,160 145,150 170,166 195,151 220,158 245,145 270,149 295,139 320,155 345,144 370,126 395,142 420,136 445,150 470,132 495,149 520,154 545,143 570,162 595,157 620,171 650,166 680,170"/>
+                            <Ellipse Canvas.Left="672" Canvas.Top="162" Width="16" Height="16" Fill="{StaticResource PanelBrush}" Stroke="{StaticResource AccentMintBrush}" StrokeThickness="3"/>
+                        </Canvas>
+                    </Viewbox>
+                    <Grid Grid.Row="2"><TextBlock Style="{StaticResource SecondaryTextStyle}" Text="-120 s"/><TextBlock HorizontalAlignment="Center" Style="{StaticResource SecondaryTextStyle}" Text="-60 s"/><TextBlock HorizontalAlignment="Right" Style="{StaticResource SecondaryTextStyle}" Text="Now"/></Grid>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="2" Style="{StaticResource PanelStyle}">
+            <Grid>
+                <Grid.RowDefinitions><RowDefinition Height="48"/><RowDefinition Height="42"/><RowDefinition Height="46"/><RowDefinition Height="46"/></Grid.RowDefinitions>
+                <Grid Grid.Row="0" Padding="20,0"><TextBlock VerticalAlignment="Center" Style="{StaticResource SectionTitleStyle}" Text="Serving cell"/></Grid>
+                <Grid Grid.Row="1" Background="#141719"><Grid.ColumnDefinitions><ColumnDefinition Width="2*"/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                    <TextBlock Margin="20,0" VerticalAlignment="Center" Style="{StaticResource SecondaryTextStyle}" Text="Role"/><TextBlock Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource SecondaryTextStyle}" Text="Band"/><TextBlock Grid.Column="2" VerticalAlignment="Center" Style="{StaticResource SecondaryTextStyle}" Text="EARFCN"/><TextBlock Grid.Column="3" VerticalAlignment="Center" Style="{StaticResource SecondaryTextStyle}" Text="PCI"/><TextBlock Grid.Column="4" VerticalAlignment="Center" Style="{StaticResource SecondaryTextStyle}" Text="RSRP"/><TextBlock Grid.Column="5" VerticalAlignment="Center" Style="{StaticResource SecondaryTextStyle}" Text="RSRQ"/>
+                </Grid>
+                <Grid Grid.Row="2"><Grid.ColumnDefinitions><ColumnDefinition Width="2*"/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                    <TextBlock Margin="20,0" VerticalAlignment="Center" Text="Serving"/><TextBlock Grid.Column="1" VerticalAlignment="Center" Text="B3"/><TextBlock Grid.Column="2" VerticalAlignment="Center" Text="1325"/><TextBlock Grid.Column="3" VerticalAlignment="Center" Text="421"/><TextBlock Grid.Column="4" VerticalAlignment="Center" Foreground="{StaticResource AccentMintBrush}" Text="-89 dBm"/><TextBlock Grid.Column="5" VerticalAlignment="Center" Text="-9 dB"/>
+                </Grid>
+                <Grid Grid.Row="3"><Grid.ColumnDefinitions><ColumnDefinition Width="2*"/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                    <TextBlock Margin="20,0" VerticalAlignment="Center" Text="Neighbor"/><TextBlock Grid.Column="1" VerticalAlignment="Center" Text="B3"/><TextBlock Grid.Column="2" VerticalAlignment="Center" Text="1325"/><TextBlock Grid.Column="3" VerticalAlignment="Center" Text="381"/><TextBlock Grid.Column="4" VerticalAlignment="Center" Text="-112 dBm"/><TextBlock Grid.Column="5" VerticalAlignment="Center" Text="-13 dB"/>
+                </Grid>
+            </Grid>
+        </Border>
+        <Border Grid.Row="3" Style="{StaticResource PanelStyle}" Padding="20,12">
+            <Grid><StackPanel Orientation="Horizontal" Spacing="10"><Ellipse Width="9" Height="9" Fill="{StaticResource AccentMintBrush}"/><TextBlock Foreground="{StaticResource AccentMintBrush}" Text="Connected"/></StackPanel><Button HorizontalAlignment="Right" Style="{StaticResource QuietButtonStyle}" Content="Disconnect"/></Grid>
+        </Border>
+    </Grid>
+    </ScrollViewer>
+</Page>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page x:Class="L850Manager.Pages.LockPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Padding="40,28,40,32" RowSpacing="16">
+        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+        <StackPanel Spacing="6"><TextBlock Style="{StaticResource PageTitleStyle}" Text="Lock"/><TextBlock Style="{StaticResource SecondaryTextStyle}" Text="Radio preferences and serving-cell control"/></StackPanel>
+        <Border Grid.Row="1" Style="{StaticResource PanelStyle}" Padding="18,12"><TextBlock Style="{StaticResource SecondaryTextStyle}" Text="Automatic  ·  Band 3  ·  EARFCN 1325  ·  PCI 421"/></Border>
+        <Grid Grid.Row="2" ColumnSpacing="0">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="5*"/><ColumnDefinition Width="7*"/></Grid.ColumnDefinitions>
+            <Border Style="{StaticResource PanelStyle}" Padding="22">
+                <StackPanel Spacing="24">
+                    <TextBlock Style="{StaticResource SectionTitleStyle}" Text="Network mode"/>
+                    <RadioButtons x:Name="NetworkModeSelector" SelectedIndex="2" MaxColumns="3"><x:String>3G only</x:String><x:String>4G only</x:String><x:String>3G + 4G</x:String></RadioButtons>
+                    <Rectangle Height="1" Fill="{StaticResource StrokeBrush}"/>
+                    <TextBlock Style="{StaticResource SectionTitleStyle}" Text="LTE bands"/>
+                    <Grid RowSpacing="16" ColumnSpacing="20"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions><Grid.RowDefinitions><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
+                        <CheckBox x:Name="BandAny" IsChecked="True" Content="Any"/><CheckBox x:Name="Band1" Grid.Column="1" Content="B1"/><CheckBox x:Name="Band3" Grid.Column="2" Content="B3"/><CheckBox x:Name="Band5" Grid.Column="3" Content="B5"/><CheckBox x:Name="Band7" Grid.Column="4" Content="B7"/>
+                        <CheckBox x:Name="Band8" Grid.Row="1" Content="B8"/><CheckBox x:Name="Band20" Grid.Row="1" Grid.Column="1" Content="B20"/><CheckBox x:Name="Band28" Grid.Row="1" Grid.Column="2" Content="B28"/><CheckBox x:Name="Band40" Grid.Row="1" Grid.Column="3" Content="B40"/><CheckBox x:Name="Band41" Grid.Row="1" Grid.Column="4" Content="B41"/>
+                    </Grid>
+                    <Button HorizontalAlignment="Left" Style="{StaticResource QuietButtonStyle}" Content="Apply band settings" Click="ApplyBands_Click"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="1" Style="{StaticResource PanelStyle}" Padding="22">
+                <StackPanel Spacing="20">
+                    <TextBlock Style="{StaticResource SectionTitleStyle}" Text="Cell lock"/>
+                    <Grid ColumnSpacing="14"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                        <StackPanel Spacing="6"><TextBlock Style="{StaticResource SecondaryTextStyle}" Text="EARFCN"/><NumberBox x:Name="EarfcnBox" Value="1325" SpinButtonPlacementMode="Compact"/></StackPanel>
+                        <StackPanel Grid.Column="1" Spacing="6"><TextBlock Style="{StaticResource SecondaryTextStyle}" Text="PCI (optional)"/><NumberBox x:Name="PciBox" Value="421" SpinButtonPlacementMode="Compact"/></StackPanel>
+                        <Button Grid.Column="2" VerticalAlignment="Bottom" Style="{StaticResource QuietButtonStyle}" Content="Scan cells" Click="ScanCells_Click"/>
+                    </Grid>
+                    <TextBlock Margin="0,8,0,0" Style="{StaticResource SectionTitleStyle}" Text="Scan results"/>
+                    <ListView x:Name="CellList" SelectionMode="Single" SelectionChanged="CellList_SelectionChanged"><ListView.ItemTemplate><DataTemplate><Grid Width="560"><Grid.ColumnDefinitions><ColumnDefinition Width="2*"/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions><TextBlock Text="{Binding RoleText}"/><TextBlock Grid.Column="1" Text="{Binding BandText}"/><TextBlock Grid.Column="2" Text="{Binding Earfcn}"/><TextBlock Grid.Column="3" Text="{Binding Pci}"/><TextBlock Grid.Column="4" Text="{Binding RsrpText}"/></Grid></DataTemplate></ListView.ItemTemplate></ListView>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <Border Grid.Row="3" Style="{StaticResource PanelStyle}" Padding="20,12"><Grid><StackPanel Orientation="Horizontal" Spacing="10"><FontIcon Foreground="#E8A52B" Glyph="&#xE7BA;"/><TextBlock Text="Applying a cell lock briefly restarts the modem."/></StackPanel><StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Spacing="10"><Button Style="{StaticResource QuietButtonStyle}" Content="Clear lock" Click="ClearLock_Click"/><Button Style="{StaticResource PrimaryButtonStyle}" Content="Apply lock" Click="ApplyLock_Click"/></StackPanel></Grid></Border>
+    </Grid>
+</Page>
