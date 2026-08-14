@@ -4,7 +4,43 @@ using L850Manager.Models;
 namespace L850Manager.Pages;
 public sealed partial class LockPage : Page
 {
+    private bool _updatingBands;
     public LockPage() => InitializeComponent();
+
+    private CheckBox[] BandBoxes => [Band1, Band3, Band5, Band7, Band8, Band20, Band28, Band40, Band41];
+
+    private void BandAny_Checked(object sender, RoutedEventArgs e)
+    {
+        if (_updatingBands) return;
+        _updatingBands = true;
+        foreach (var box in BandBoxes) box.IsChecked = false;
+        _updatingBands = false;
+        UpdateBandHint();
+    }
+
+    private void Band_Checked(object sender, RoutedEventArgs e)
+    {
+        if (_updatingBands) return;
+        _updatingBands = true;
+        BandAny.IsChecked = false;
+        _updatingBands = false;
+        UpdateBandHint();
+    }
+
+    private void Band_Unchecked(object sender, RoutedEventArgs e)
+    {
+        if (_updatingBands) return;
+        if (BandBoxes.All(box => box.IsChecked != true)) BandAny.IsChecked = true;
+        UpdateBandHint();
+    }
+
+    private void UpdateBandHint()
+    {
+        var selected = BandBoxes.Where(box => box.IsChecked == true).Select(box => box.Content?.ToString()).ToArray();
+        BandSelectionHint.Text = selected.Length == 0
+            ? "Automatic lets the network choose any supported LTE band."
+            : $"Locked selection: {string.Join(", ", selected)}";
+    }
 
     private async void ScanCells_Click(object sender, RoutedEventArgs e)
     {

@@ -7,16 +7,36 @@
         <Grid Grid.Row="2" ColumnSpacing="0">
             <Grid.ColumnDefinitions><ColumnDefinition Width="5*"/><ColumnDefinition Width="7*"/></Grid.ColumnDefinitions>
             <Border Style="{StaticResource PanelStyle}" Padding="22">
-                <StackPanel Spacing="24">
-                    <TextBlock Style="{StaticResource SectionTitleStyle}" Text="Network mode"/>
-                    <RadioButtons x:Name="NetworkModeSelector" SelectedIndex="2" MaxColumns="3"><x:String>3G only</x:String><x:String>4G only</x:String><x:String>3G + 4G</x:String></RadioButtons>
+                <StackPanel Spacing="20">
+                    <StackPanel Spacing="5">
+                        <TextBlock Style="{StaticResource SectionTitleStyle}" Text="Network mode"/>
+                        <TextBlock Style="{StaticResource SecondaryTextStyle}" Text="Choose which radio technology the modem may use." TextWrapping="Wrap"/>
+                    </StackPanel>
+                    <RadioButtons x:Name="NetworkModeSelector" SelectedIndex="2" MaxColumns="1">
+                        <x:String>3G only</x:String>
+                        <x:String>4G only</x:String>
+                        <x:String>3G + 4G (automatic)</x:String>
+                    </RadioButtons>
                     <Rectangle Height="1" Fill="{StaticResource StrokeBrush}"/>
-                    <TextBlock Style="{StaticResource SectionTitleStyle}" Text="LTE bands"/>
-                    <Grid RowSpacing="16" ColumnSpacing="20"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions><Grid.RowDefinitions><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
-                        <CheckBox x:Name="BandAny" IsChecked="True" Content="Any"/><CheckBox x:Name="Band1" Grid.Column="1" Content="B1"/><CheckBox x:Name="Band3" Grid.Column="2" Content="B3"/><CheckBox x:Name="Band5" Grid.Column="3" Content="B5"/><CheckBox x:Name="Band7" Grid.Column="4" Content="B7"/>
-                        <CheckBox x:Name="Band8" Grid.Row="1" Content="B8"/><CheckBox x:Name="Band20" Grid.Row="1" Grid.Column="1" Content="B20"/><CheckBox x:Name="Band28" Grid.Row="1" Grid.Column="2" Content="B28"/><CheckBox x:Name="Band40" Grid.Row="1" Grid.Column="3" Content="B40"/><CheckBox x:Name="Band41" Grid.Row="1" Grid.Column="4" Content="B41"/>
+                    <StackPanel Spacing="5">
+                        <TextBlock Style="{StaticResource SectionTitleStyle}" Text="LTE band selection"/>
+                        <TextBlock x:Name="BandSelectionHint" Style="{StaticResource SecondaryTextStyle}" Text="Automatic lets the network choose any supported LTE band." TextWrapping="Wrap"/>
+                    </StackPanel>
+                    <Grid RowSpacing="10" ColumnSpacing="10">
+                        <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
+                        <CheckBox x:Name="BandAny" Grid.ColumnSpan="3" IsChecked="True" Content="Automatic · all supported bands" Checked="BandAny_Checked"/>
+                        <CheckBox x:Name="Band1" Grid.Row="1" Content="Band 1" Checked="Band_Checked" Unchecked="Band_Unchecked"/>
+                        <CheckBox x:Name="Band3" Grid.Row="1" Grid.Column="1" Content="Band 3" Checked="Band_Checked" Unchecked="Band_Unchecked"/>
+                        <CheckBox x:Name="Band5" Grid.Row="1" Grid.Column="2" Content="Band 5" Checked="Band_Checked" Unchecked="Band_Unchecked"/>
+                        <CheckBox x:Name="Band7" Grid.Row="2" Content="Band 7" Checked="Band_Checked" Unchecked="Band_Unchecked"/>
+                        <CheckBox x:Name="Band8" Grid.Row="2" Grid.Column="1" Content="Band 8" Checked="Band_Checked" Unchecked="Band_Unchecked"/>
+                        <CheckBox x:Name="Band20" Grid.Row="2" Grid.Column="2" Content="Band 20" Checked="Band_Checked" Unchecked="Band_Unchecked"/>
+                        <CheckBox x:Name="Band28" Grid.Row="3" Content="Band 28" Checked="Band_Checked" Unchecked="Band_Unchecked"/>
+                        <CheckBox x:Name="Band40" Grid.Row="3" Grid.Column="1" Content="Band 40" Checked="Band_Checked" Unchecked="Band_Unchecked"/>
+                        <CheckBox x:Name="Band41" Grid.Row="3" Grid.Column="2" Content="Band 41" Checked="Band_Checked" Unchecked="Band_Unchecked"/>
                     </Grid>
-                    <Button HorizontalAlignment="Left" Style="{StaticResource QuietButtonStyle}" Content="Apply band settings" Click="ApplyBands_Click"/>
+                    <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Style="{StaticResource QuietButtonStyle}" Content="Apply network settings" Click="ApplyBands_Click"/>
                 </StackPanel>
             </Border>
             <Border Grid.Column="1" Style="{StaticResource PanelStyle}" Padding="22">
