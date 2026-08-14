@@ -5,6 +5,8 @@ L850 Manager is a native Windows desktop utility for the Fibocom L850-GL modem i
 ## Current scope
 
 - Live modem, network, signal, serving-cell, voltage, and carrier overview
+- Industrial-console Overview with a live RSRP history chart, metric cards, and dynamic serving/neighbor table
+- Separate Radio and Cells workflows with responsive narrow-window layouts
 - SIM SMS inbox polling, send with confirmation, and confirmed deletion
 - 3G/4G mode and LTE band selection with readback verification
 - Bounded XMCI serving/neighbor scan

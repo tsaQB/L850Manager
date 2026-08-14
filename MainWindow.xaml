@@ -47,12 +47,15 @@
                         <FontIcon Glyph="&#xE80F;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem Content="Lock" Tag="lock">
+                <NavigationViewItem Content="Radio" Tag="radio">
                     <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE72E;" />
+                        <FontIcon Glyph="&#xE95A;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem Content="SMS" Tag="sms">
+                <NavigationViewItem Content="Cells" Tag="cells">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE9D2;" /></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Messages" Tag="sms">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE8BD;" />
                     </NavigationViewItem.Icon>
@@ -72,9 +75,9 @@
                 <StackPanel Margin="16,0,12,16" Spacing="4">
                     <StackPanel Orientation="Horizontal" Spacing="9">
                         <Ellipse Width="9" Height="9" Fill="{StaticResource AccentMintBrush}" />
-                        <TextBlock Foreground="{StaticResource AccentMintBrush}" Text="Connected" />
+                        <TextBlock x:Name="FooterStateText" Foreground="{StaticResource AccentMintBrush}" Text="Modem ready" />
                     </StackPanel>
-                    <TextBlock Margin="18,0,0,0" Style="{StaticResource SecondaryTextStyle}" Text="XL Axiata · LTE" />
+                    <TextBlock x:Name="FooterNetworkText" Margin="18,0,0,0" Style="{StaticResource SecondaryTextStyle}" Text="Reading network…" />
                 </StackPanel>
             </NavigationView.PaneFooter>
             <Frame x:Name="NavFrame" />

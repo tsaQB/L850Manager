@@ -19,8 +19,18 @@ public sealed partial class MainWindow : Window
         AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Tall;
         AppWindow.SetIcon("Assets/AppIcon.ico");
         AppWindow.Resize(new Windows.Graphics.SizeInt32(1440, 900));
+        App.Modem.SnapshotUpdated += Modem_SnapshotUpdated;
         NavFrame.Navigate(typeof(HomePage));
         Activated += MainWindow_Activated;
+    }
+
+    private void Modem_SnapshotUpdated(object? sender, Models.ModemSnapshot snapshot)
+    {
+        DispatcherQueue.TryEnqueue(() =>
+        {
+            FooterStateText.Text = snapshot.IsConnected ? "Connected" : "Modem ready";
+            FooterNetworkText.Text = $"{snapshot.Provider} · {snapshot.AccessTechnology}";
+        });
     }
 
     private async void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
@@ -54,8 +64,11 @@ public sealed partial class MainWindow : Window
                 case "overview":
                     NavigateOnce(typeof(HomePage));
                     break;
-                case "lock":
-                    NavigateOnce(typeof(LockPage));
+                case "radio":
+                    NavigateOnce(typeof(RadioPage));
+                    break;
+                case "cells":
+                    NavigateOnce(typeof(CellsPage));
                     break;
                 case "sms":
                     NavigateOnce(typeof(SmsPage));

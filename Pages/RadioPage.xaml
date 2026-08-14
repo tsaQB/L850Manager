@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page x:Class="L850Manager.Pages.RadioPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ScrollViewer VerticalScrollBarVisibility="Auto"><Grid Padding="40,28,40,40" RowSpacing="18" MaxWidth="1050" HorizontalAlignment="Left">
+    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <StackPanel Spacing="6"><TextBlock Style="{StaticResource PageTitleStyle}" Text="Radio"/><TextBlock Style="{StaticResource SecondaryTextStyle}" Text="Network technology and LTE band preferences"/></StackPanel>
+    <Border Grid.Row="1" Style="{StaticResource PanelStyle}" Padding="24"><StackPanel Spacing="20">
+      <StackPanel Spacing="5"><TextBlock Style="{StaticResource EyebrowStyle}" Text="NETWORK MODE"/><TextBlock Style="{StaticResource SectionTitleStyle}" Text="Preferred technology"/><TextBlock Style="{StaticResource SecondaryTextStyle}" Text="The modem may briefly lose registration while this changes."/></StackPanel>
+      <RadioButtons x:Name="NetworkModeSelector" SelectedIndex="2" MaxColumns="3"><x:String>3G only</x:String><x:String>4G only</x:String><x:String>3G + 4G automatic</x:String></RadioButtons>
+    </StackPanel></Border>
+    <Border Grid.Row="2" Style="{StaticResource PanelStyle}" Padding="24"><StackPanel Spacing="20">
+      <StackPanel Spacing="5"><TextBlock Style="{StaticResource EyebrowStyle}" Text="LTE BANDS"/><TextBlock Style="{StaticResource SectionTitleStyle}" Text="Allowed bands"/><TextBlock x:Name="BandSelectionHint" Style="{StaticResource SecondaryTextStyle}" Text="Automatic lets the network choose any supported LTE band." TextWrapping="Wrap"/></StackPanel>
+      <CheckBox x:Name="BandAny" IsChecked="True" Content="Automatic · all supported bands"/>
+      <Grid RowSpacing="10" ColumnSpacing="10"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions><Grid.RowDefinitions><RowDefinition/><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
+        <CheckBox x:Name="Band1" Content="Band 1 · 2100 MHz"/><CheckBox x:Name="Band3" Grid.Column="1" Content="Band 3 · 1800 MHz"/><CheckBox x:Name="Band5" Grid.Column="2" Content="Band 5 · 850 MHz"/>
+        <CheckBox x:Name="Band7" Grid.Row="1" Content="Band 7 · 2600 MHz"/><CheckBox x:Name="Band8" Grid.Row="1" Grid.Column="1" Content="Band 8 · 900 MHz"/><CheckBox x:Name="Band20" Grid.Row="1" Grid.Column="2" Content="Band 20 · 800 MHz"/>
+        <CheckBox x:Name="Band28" Grid.Row="2" Content="Band 28 · 700 MHz"/><CheckBox x:Name="Band40" Grid.Row="2" Grid.Column="1" Content="Band 40 · 2300 MHz"/><CheckBox x:Name="Band41" Grid.Row="2" Grid.Column="2" Content="Band 41 · 2500 MHz"/>
+      </Grid>
+      <Button HorizontalAlignment="Right" Style="{StaticResource PrimaryButtonStyle}" Content="Apply radio settings" Click="Apply_Click"/>
+    </StackPanel></Border>
+  </Grid></ScrollViewer>
+</Page>

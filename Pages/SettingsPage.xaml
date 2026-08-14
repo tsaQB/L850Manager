@@ -13,7 +13,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBlock Style="{StaticResource PageTitleStyle}" Text="Settings" />
+        <StackPanel Spacing="5"><TextBlock Style="{StaticResource PageTitleStyle}" Text="Settings" /><TextBlock Style="{StaticResource SecondaryTextStyle}" Text="Appearance, polling, and application behavior"/></StackPanel>
         <Border Grid.Row="1" Style="{StaticResource PanelStyle}" Padding="20" MaxWidth="720" HorizontalAlignment="Left">
             <StackPanel Spacing="18"><TextBlock Style="{StaticResource SectionTitleStyle}" Text="Appearance"/><ToggleSwitch Header="Use system theme" OffContent="Dark" OnContent="System"/><Rectangle Height="1" Fill="{StaticResource StrokeBrush}"/><TextBlock Style="{StaticResource SectionTitleStyle}" Text="Polling"/><NumberBox Header="Overview refresh interval (seconds)" Value="5" Minimum="2" Maximum="60"/><ToggleSwitch Header="Pause polling while editing lock values" IsOn="True"/></StackPanel>
         </Border>

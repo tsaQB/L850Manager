@@ -9,6 +9,9 @@ public sealed class ModemMonitor(AtCommandService at, WwanService wwan)
     private string? _manufacturer;
     private string? _model;
     private string? _firmware;
+    private IReadOnlyList<CellSnapshot> _lastCells = [];
+    public IReadOnlyList<CellSnapshot> LastCells => _lastCells;
+    public event EventHandler<ModemSnapshot>? SnapshotUpdated;
 
     public async Task<ModemSnapshot> RefreshAsync(CancellationToken cancellationToken = default)
     {
@@ -30,7 +33,8 @@ public sealed class ModemMonitor(AtCommandService at, WwanService wwan)
             if (_lastCell is null || DateTimeOffset.Now - _lastCellScan > TimeSpan.FromSeconds(20))
             {
                 string scan = await at.ExecuteAsync("AT+XMCI=1", TimeSpan.FromSeconds(15), cancellationToken);
-                _lastCell = ModemParsers.Xmci(scan).FirstOrDefault(x => x.IsServing);
+                _lastCells = ModemParsers.Xmci(scan);
+                _lastCell = _lastCells.FirstOrDefault(x => x.IsServing);
                 _lastCellScan = DateTimeOffset.Now;
             }
 
@@ -57,6 +61,7 @@ public sealed class ModemMonitor(AtCommandService at, WwanService wwan)
                 UpdatedAt = DateTimeOffset.Now
             };
             App.Log.Info("modem", $"{snapshot.Model} on {snapshot.PortName}; {snapshot.Provider} {snapshot.AccessTechnology}; B{snapshot.Band?.ToString() ?? "—"} EARFCN {snapshot.Earfcn?.ToString() ?? "—"} PCI {snapshot.Pci?.ToString() ?? "—"}");
+            SnapshotUpdated?.Invoke(this, snapshot);
             return snapshot;
         }
         catch (Exception ex)
